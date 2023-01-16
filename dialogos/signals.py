@@ -1,5 +1,5 @@
 import django.dispatch
 
 
-commented = django.dispatch.Signal(providing_args=["comment", "request"])
-comment_updated = django.dispatch.Signal(providing_args=["comment", "request"])
+commented = django.dispatch.Signal()
+comment_updated = django.dispatch.Signal()
