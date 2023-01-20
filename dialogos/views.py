@@ -46,7 +46,7 @@ def post_comment(request, content_type_id, object_id, form_class=CommentForm):
     if form.is_valid():
         comment = form.save()
         commented.send(sender=post_comment, comment=comment, request=request)
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(json.dumps({
                 "status": "OK",
                 "comment": dehydrate_comment(comment),
@@ -55,7 +55,7 @@ def post_comment(request, content_type_id, object_id, form_class=CommentForm):
                 }, request=request)
             }), content_type="application/json")
     else:
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(json.dumps({
                 "status": "ERROR",
                 "errors": form.errors,
@@ -82,13 +82,13 @@ def edit_comment(request, comment_id, form_class=CommentForm):
         comment = form.save()
         comment_updated.send(
             sender=edit_comment, comment=comment, request=request)
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(json.dumps({
                 "status": "OK",
                 "comment": dehydrate_comment(comment)
             }), content_type="application/json")
     else:
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(json.dumps({
                 "status": "ERROR",
                 "errors": form.errors
@@ -107,10 +107,10 @@ def delete_comment(request, comment_id):
     obj = comment.content_object
     if can_delete(request.user, comment):
         comment.delete()
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(json.dumps({"status": "OK"}))
     else:
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(json.dumps(
                 {"status": "ERROR",
                  "errors": "You do not have permission to delete this comment."
