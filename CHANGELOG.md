@@ -1,5 +1,10 @@
 # Change Log
 
+## 4.0.0
+
+* Novel-T takeover
+* Support Django 4
+
 ## 3.0.1 [2020-01-16]
 
 <li> 2020-01-14: Python 3 / Django 2 Compatibility</li>
